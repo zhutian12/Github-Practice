@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Jun 27 22:35:27 2020
+
+@author: tianzhu
+"""
+#import package
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+pd.set_option('expand_frame_repr', False)
+sns.set() #get grid line background for seaborn
+
+#read dataframe
+gsale = pd.read_csv("desktop/Python/dataset/vgsales.csv")
+
+#check number of rwos and columns
+print("game sale = ", gsale.shape)
+print(gsale.columns,"\n")
+
+#get information for each varibales
+gsale.info()
+print(gsale["Name"].describe())
+print(gsale["Global_Sales"].describe())#max sales is 82.7 but 75% quantile is only 0.47 which doesn't make sense
+gsale[["Global_Sales","Name"]].head(10)
+
+#Use plot to visualize data
+plt.figure(figsize=(9, 8))
+sns.distplot(gsale["Year"],bins=50)
+plt.xlim(0,20)
+plt.figure(figsize=(9, 8))
+sns.distplot(gsale["EU_Sales"])
+plt.figure(figsize=(9,8))
+sns.catplot(x = "Platform", y = "Global_Sales",data = filter_g)
+
+#Group by: spilt apply combine
+gsale.groupby("Platform")['Global_Sales'].sum() #sum global sales after groupby platform
+filter_g = gsale.groupby("Platform").filter(lambda x: len(x) > 500) #filter Platform who has appear in this list for more than 500 times
+
+
+#glimpse dataset
+gsale.head(10)
+
+#count each columns value
+gsale["Year"].value_counts()#there are many games in this list which is produced in 2009, 2008, 2010, 2007, 2011
+gsale["Genre"].value_counts() #Action appears most in this list, then sports
+gsale["Publisher"].value_counts() #EA, Acitvision and Namco Bandai appear most
+gsale["Platform"].value_counts()#DS, PS2, PS3 appear most
+
+#check null value
+print(gsale.isnull().sum())
+
+#check data type
+print(gsale.dtypes)
+
+#check game in each platform
+gsale[gsale["Platform"] == "PS4"].sort_values("Rank").""
+#explore data
+for i in gsale:
+    print(i)
+#data type
+print(gsale.dtypes)
+#check NA values in each column
+print(gsale.isnull().sum())
+gsale.count()
+pd.isnull(gsale.Year)
+NA_num = gsale[gsale['Year'].isnull()]
+gsale["Other_Sales"].sort_values(ascending = False)
+
